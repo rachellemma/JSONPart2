@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+<!-- jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      padding: 20px;
+    }
+    #result {
+      margin-top: 20px;
+    }
+    .product {
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .product h2 {
+      margin: 0;
+      color: #333;
+    }
+    .product p {
+      margin: 5px 0;
+      color: #555;
+    }
+</style>
+</head>
+<body>
+    <h1>Available Products</h1>
+    <div id="result"></div>
+    <button id="loadBtn">Button</button>
+    <script>
+        // Using $.get() to read the JSON file asynchronously when the button is pressed
+        $("#loadBtn").on("click",function(){
+            // data is a parameter that is automatically passed into the callback 
+            // function by jQuery once it successfully loads the JSON file
+            // the file's content is called data 
+            var htmlContent = "";
+            $.get("products.json",function(data){
+                // loop through the data (which is an array of products)
+                for (var i = 0; i < data.length; i++) {
+                    var product = data[i];
+                    var categories = product.categories.join(",");
+                    htmlContent += `
+                        <div class="product">
+                            <h2>${product.name}</h2>
+                            <p>${product.description}</p>
+                            <p><strong>Price:</strong> $${product.price}</p>
+                            <p><strong>Categories:</strong> ${categories}</p>
+                        </div>`;
+                }
+                document.getElementById("result").innerHTML = htmlContent;
+            });
+        });
+    </script>
+</body>
+</html>
